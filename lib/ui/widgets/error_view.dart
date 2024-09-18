@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ErrorView extends StatelessWidget {
-  final String error;
+  final String? error;
   final Function onRetryClick;
 
   const ErrorView({
@@ -14,8 +14,8 @@ class ErrorView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(error),
-        ElevatedButton(onPressed: () {}, child: Text("Retry"))
+        Text(error!),
+        ElevatedButton(onPressed: () {}, child: const Text("Retry"))
       ],
     );
   }
