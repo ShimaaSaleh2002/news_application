@@ -6,7 +6,6 @@ import 'app_category.dart';
 
 class CategoriesTab extends StatelessWidget {
   final Function(Category) onCategoryClick;
-
   const CategoriesTab(this.onCategoryClick, {super.key});
 
   @override
