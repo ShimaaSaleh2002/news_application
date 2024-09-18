@@ -1,42 +1,41 @@
-
-import 'package:news_app/data/models/sources_response.dart';
-
 class Source {
   Source({
-    required this.country,
-    required this.name,
-    required this.description,
-    required this.language,
-    required this.id,
-    required this.category,
-    required this.url,
+    this.id,
+    this.name,
+    this.description,
+    this.url,
+    this.category,
+    this.language,
+    this.country,
   });
 
-  String country;
-  String name;
-  String description;
-  String language;
-  String id;
-  Category category;
-  String url;
+  Source.fromJson(dynamic json) {
+    id = json['id'];
+    name = json['name'];
+    description = json['description'];
+    url = json['url'];
+    category = json['category'];
+    language = json['language'];
+    country = json['country'];
+  }
 
-  factory Source.fromJson(Map<dynamic, dynamic> json) => Source(
-    country: json["country"],
-    name: json["name"],
-    description: json["description"],
-    language: json["language"],
-    id: json["id"],
-    category: categoryValues.map[json["category"]]!,
-    url: json["url"],
-  );
+  String? id;
+  String? name;
+  String? description;
+  String? url;
+  String? category;
+  String? language;
+  String? country;
 
-  Map<dynamic, dynamic> toJson() => {
-    "country": country,
-    "name": name,
-    "description": description,
-    "language": language,
-    "id": id,
-    "category": categoryValues.reverse[category],
-    "url": url,
-  };
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = id;
+    map['name'] = name;
+    map['description'] = description;
+    map['url'] = url;
+    map['category'] = category;
+    map['language'] = language;
+    map['country'] = country;
+    return map;
+  }
 }
