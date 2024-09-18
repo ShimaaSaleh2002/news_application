@@ -1,37 +1,51 @@
+import 'dart:convert';
 import 'package:news_app/data/models/source.dart';
+
+
+SourcesResponse sourcesResponseFromJson(String str) => SourcesResponse.fromJson(json.decode(str));
+
+String sourcesResponseToJson(SourcesResponse data) => json.encode(data.toJson());
 
 class SourcesResponse {
     SourcesResponse({
-        this.status,
-        this.message,
-        this.code,
-        this.sources,
+        required this.sources,
+        required this.status,
     });
 
-    SourcesResponse.fromJson(dynamic json) {
-        status = json['status'];
-        code = json['code'];
-        message = json['message'];
-        if (json['sources'] != null) {
-            sources = [];
-            json['sources'].forEach((v) {
-                sources?.add(Source.fromJson(v));
-            });
-        }
-    }
+    List<Source> sources;
+    String status;
 
-    String? status;
-    List<Source>? sources;
-    String? code;
+    factory SourcesResponse.fromJson(Map<dynamic, dynamic> json) => SourcesResponse(
+        sources: List<Source>.from(json["sources"].map((x) => Source.fromJson(x))),
+        status: json["status"],
+    );
 
-    String? message;
+    Map<dynamic, dynamic> toJson() => {
+        "sources": List<dynamic>.from(sources.map((x) => x.toJson())),
+        "status": status,
+    };
+}
 
-    Map<String, dynamic> toJson() {
-        final map = <String, dynamic>{};
-        map['status'] = status;
-        if (sources != null) {
-            map['sources'] = sources?.map((v) => v.toJson()).toList();
-        }
-        return map;
+enum Category { GENERAL, BUSINESS, TECHNOLOGY, SPORTS, ENTERTAINMENT, HEALTH, SCIENCE }
+
+final categoryValues = EnumValues({
+    "business": Category.BUSINESS,
+    "entertainment": Category.ENTERTAINMENT,
+    "general": Category.GENERAL,
+    "health": Category.HEALTH,
+    "science": Category.SCIENCE,
+    "sports": Category.SPORTS,
+    "technology": Category.TECHNOLOGY
+});
+
+class EnumValues<T> {
+    Map<String, T> map;
+    late Map<T, String> reverseMap;
+
+    EnumValues(this.map);
+
+    Map<T, String> get reverse {
+        reverseMap = map.map((k, v) => MapEntry(v, k));
+        return reverseMap;
     }
 }

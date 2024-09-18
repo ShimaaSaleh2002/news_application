@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/data/api_manager.dart';
 import 'package:news_app/ui/screens/home/home_screen.dart';
-import 'package:news_app/ui/screens/my_theme_data.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,8 +11,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ApiManager.getSources();
     return MaterialApp(
-      theme: MyThemeData.lightTheme,
       debugShowCheckedModeBanner: false,
       initialRoute: HomeScreen.routeName,
       routes: {
