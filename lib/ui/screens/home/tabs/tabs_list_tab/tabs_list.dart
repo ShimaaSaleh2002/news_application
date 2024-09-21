@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/data/api_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/data/models/category.dart';
 import 'package:news_app/data/models/source.dart';
-import 'package:news_app/data/models/sources_response.dart';
+import 'package:news_app/ui/screens/home/tabs/tabs_list_tab/cubit/tabs_list_view_model.dart';
 import 'package:news_app/ui/screens/home/tabs/tabs_list_tab/news_list.dart';
 import 'package:news_app/ui/screens/home/tabs/tabs_list_tab/tab_item.dart';
 import 'package:news_app/ui/widgets/error_view.dart';
 import 'package:news_app/ui/widgets/loading_view.dart';
+
+import 'cubit/sources_state.dart';
 
 class TabsList extends StatefulWidget {
   Category category;
@@ -17,31 +19,30 @@ class TabsList extends StatefulWidget {
 }
 
 class _TabsListState extends State<TabsList> {
+  TabsListViewModel viewModel = TabsListViewModel();
   int selectedTabIndex = 0;
 
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    viewModel.getSources(widget.category.backEndId);
+  }
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<SourcesResponse?>(
-      future: ApiManager.getSources(
-          widget.category.backEndId) //calls z function that returns future
-      ,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-        //client error ..didn't manage to parse as i've no response..didn't reach the server [catch]
-        //no internet connection
-          return ErrorView(
-              error: snapshot.error.toString(),
-              onRetryClick: () {
-                ApiManager.getSources(widget.category.backEndId);
-                setState(() {});
-              });
-        } else if (snapshot.hasData) {
-          return buildTabsList(snapshot.data!.sources!);
-        } else {
-          return const LoadingView();
-        }
-      },
+    return BlocProvider(
+      create: (context) => viewModel,
+      child: BlocBuilder<TabsListViewModel,SourcesState>(
+        //bloc: viewModel,
+          builder: (context, state) {
+            if(state is SourceLoadingState){
+              return const LoadingView();
+            }else if(state is SourceSuccessState){
+              return buildTabsList(state.sourcesList);
+            }else if(state is SourceErrorState){
+              return ErrorView(error: state.errorMessage, onRetryClick: (){});
+            }
+            return Container();
+          },),
     );
   }
 
@@ -75,3 +76,26 @@ class _TabsListState extends State<TabsList> {
     );
   }
 }
+
+//
+// FutureBuilder<SourcesResponse?>(
+// future: ApiManager.getSources(
+// widget.category.backEndId) //calls z function that returns future
+// ,
+// builder: (context, snapshot) {
+// if (snapshot.hasError) {
+// //client error ..didn't manage to parse as i've no response..didn't reach the server [catch]
+// //no internet connection
+// return ErrorView(
+// error: snapshot.error.toString(),
+// onRetryClick: () {
+// ApiManager.getSources(widget.category.backEndId);
+// setState(() {});
+// });
+// } else if (snapshot.hasData) {
+// return buildTabsList(snapshot.data!.sources!);
+// } else {
+// return const LoadingView();
+// }
+// },
+// );
