@@ -7,7 +7,6 @@ import 'package:news_app/ui/screens/home/tabs/tabs_list_tab/news_list.dart';
 import 'package:news_app/ui/screens/home/tabs/tabs_list_tab/tab_item.dart';
 import 'package:news_app/ui/widgets/error_view.dart';
 import 'package:news_app/ui/widgets/loading_view.dart';
-
 import 'cubit/sources_state.dart';
 
 class TabsList extends StatefulWidget {
@@ -25,7 +24,7 @@ class _TabsListState extends State<TabsList> {
   @override
   void initState() {
     // TODO: implement initState
-    viewModel.getSources(widget.category.backEndId);
+    viewModel.getSources(widget.category.backEndId??"");
   }
   @override
   Widget build(BuildContext context) {
@@ -39,7 +38,9 @@ class _TabsListState extends State<TabsList> {
             }else if(state is SourceSuccessState){
               return buildTabsList(state.sourcesList);
             }else if(state is SourceErrorState){
-              return ErrorView(error: state.errorMessage, onRetryClick: (){});
+              return ErrorView(error: state.errorMessage, onRetryClick: (){
+                viewModel.getSources(widget.category.backEndId);
+              });
             }
             return Container();
           },),
