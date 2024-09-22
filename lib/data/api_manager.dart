@@ -27,7 +27,7 @@ class ApiManager {
   //   }
   // }
 
-  static Future<SourcesResponse?> getSources(String categoryId) async {
+   Future<SourcesResponse?> getSources(String categoryId) async {
     Response serverResponse = await get(Uri.parse(
         '$_baseurl$_sourcesEndPoint?apiKey=$_apiKey&category=$categoryId')); //link to call the api
     if (serverResponse.statusCode >= 200 && serverResponse.statusCode < 300) {
@@ -42,7 +42,7 @@ class ApiManager {
     }
   }
 
-  static Future<ArticlesResponse?> getArticles(String sourceId) async {
+   Future<ArticlesResponse?> getArticles(String sourceId) async {
     Response serverResponse =
     await get(Uri.parse('$_baseurl$_articlesEndPoint?apiKey=$_apiKey&sources=$sourceId'));
     if (serverResponse.statusCode >= 200 && serverResponse.statusCode < 300) {

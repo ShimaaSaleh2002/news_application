@@ -77,26 +77,3 @@ class _TabsListState extends State<TabsList> {
     );
   }
 }
-
-//
-// FutureBuilder<SourcesResponse?>(
-// future: ApiManager.getSources(
-// widget.category.backEndId) //calls z function that returns future
-// ,
-// builder: (context, snapshot) {
-// if (snapshot.hasError) {
-// //client error ..didn't manage to parse as i've no response..didn't reach the server [catch]
-// //no internet connection
-// return ErrorView(
-// error: snapshot.error.toString(),
-// onRetryClick: () {
-// ApiManager.getSources(widget.category.backEndId);
-// setState(() {});
-// });
-// } else if (snapshot.hasData) {
-// return buildTabsList(snapshot.data!.sources!);
-// } else {
-// return const LoadingView();
-// }
-// },
-// );

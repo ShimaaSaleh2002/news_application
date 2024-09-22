@@ -53,22 +53,3 @@ ArticlesListViewModel viewModel = ArticlesListViewModel();
             NewsItem(article: list[index]));
   }
 }
-
-
-// FutureBuilder<ArticlesResponse?>(
-// future: ApiManager.getArticles(widget.source.id!),
-// builder: (context, snapshot) {
-// if (snapshot.hasError) {
-// return ErrorView(
-// error: snapshot.error.toString(), onRetryClick: () {
-// ApiManager.getArticles(widget.source.id!);
-// setState(() {
-//
-// });
-// });
-// } else if (snapshot.hasData) {
-// return buildNewsList(snapshot.data!.articles!);
-// } else {
-// return const LoadingView();
-// }
-// })
