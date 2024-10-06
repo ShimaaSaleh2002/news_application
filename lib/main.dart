@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/data/hive_manager.dart';
 import 'package:news_app/ui/screens/home/home_screen.dart';
 import 'package:news_app/ui/screens/my_theme_data.dart';
 
 void main() {
+  HiveManager.init();
   runApp(const MyApp());
 }
 
