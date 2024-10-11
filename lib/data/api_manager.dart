@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:injectable/injectable.dart';
 import 'package:news_app/data/models/articles_response.dart';
 import 'package:news_app/data/models/sources_response.dart';
 
+@injectable
 class ApiManager {
   static const String _baseurl = "https://newsapi.org";
   static const String _apiKey = "1ef53d726bef495689ad268388c4526d";
@@ -27,7 +29,7 @@ class ApiManager {
   //   }
   // }
 
-  static Future<SourcesResponse?> getSources(String categoryId) async {
+   Future<SourcesResponse?> getSources(String categoryId) async {
     Response serverResponse = await get(Uri.parse(
         '$_baseurl$_sourcesEndPoint?apiKey=$_apiKey&category=$categoryId')); //link to call the api
     if (serverResponse.statusCode >= 200 && serverResponse.statusCode < 300) {
@@ -42,7 +44,7 @@ class ApiManager {
     }
   }
 
-  static Future<ArticlesResponse?> getArticles(String sourceId) async {
+   Future<ArticlesResponse?> getArticles(String sourceId) async {
     Response serverResponse =
     await get(Uri.parse('$_baseurl$_articlesEndPoint?apiKey=$_apiKey&sources=$sourceId'));
     if (serverResponse.statusCode >= 200 && serverResponse.statusCode < 300) {

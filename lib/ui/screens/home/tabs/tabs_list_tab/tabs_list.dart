@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/data/models/category.dart';
 import 'package:news_app/data/models/source.dart';
+import 'package:news_app/ui/di.dart';
 import 'package:news_app/ui/screens/home/tabs/tabs_list_tab/news_list.dart';
 import 'package:news_app/ui/screens/home/tabs/tabs_list_tab/tab_item.dart';
 import 'package:news_app/ui/screens/home/tabs/tabs_list_tab/tabs_view_model.dart';
@@ -11,7 +12,7 @@ import 'package:news_app/ui/widgets/loading_view.dart';
 import '../../../../base/base_api_state.dart';
 
 class TabsList extends StatefulWidget {
-  Category category;
+  Category? category;
   TabsList({required this.category, super.key});
 
   @override
@@ -19,14 +20,14 @@ class TabsList extends StatefulWidget {
 }
 
 class _TabsListState extends State<TabsList> {
-  TabsViewModel viewModel = TabsViewModel();
+  TabsViewModel viewModel = getIt();
   int selectedTabIndex = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    viewModel.getSources(widget.category.backEndId);
+    viewModel.getSources(widget.category!.backEndId);
   }
 
   @override
@@ -44,7 +45,7 @@ class _TabsListState extends State<TabsList> {
               return ErrorView(
                   error: errorState.errorMessage,
                   onRetryClick: () {
-                    viewModel.getSources(widget.category.backEndId);
+                    viewModel.getSources(widget.category!.backEndId);
                   });
             } else {
               return const LoadingView();

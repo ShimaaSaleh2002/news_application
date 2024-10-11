@@ -1,12 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:news_app/data/models/sources_response.dart';
 import 'package:news_app/data/repositories/news_repository/news_repository.dart';
 import 'package:news_app/ui/base/base_api_state.dart';
 
+@injectable
 class TabsViewModel extends Cubit<TabsViewModelState>{
-  NewsRepository newsRepository = NewsRepository();
+  NewsRepository newsRepository ;
 
-  TabsViewModel() : super(TabsViewModelState.initial());
+  TabsViewModel(this.newsRepository) : super(TabsViewModelState.initial());
 
   getSources(String categoryId)async{
     try{

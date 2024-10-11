@@ -6,7 +6,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../../../../widgets/loading_view.dart';
 
 class NewsItem extends StatelessWidget {
-  final Article article;
+  final Article? article;
   const NewsItem({super.key,required this.article});
 
   @override
@@ -21,21 +21,21 @@ class NewsItem extends StatelessWidget {
             child: CachedNetworkImage(
               fit: BoxFit.cover,
               width: double.infinity,
-              imageUrl: article.urlToImage ?? "",
+              imageUrl: article?.urlToImage ?? "",
               placeholder: (context, url) => const LoadingView(),
               errorWidget: (context, url, error) =>const  Icon(Icons.error),
               height: MediaQuery.of(context).size.height * .25,
             ),
           ),
-          Text(article.source?.name ?? "",style:Theme.of(context)
+          Text(article?.source?.name ?? "",style:Theme.of(context)
               .textTheme
               .titleSmall
               ?.copyWith(color: MyThemeData.greyColor)),
-          Text(article.title ?? "",style: Theme.of(context).textTheme.titleMedium),
+          Text(article?.title ?? "",style: Theme.of(context).textTheme.titleMedium),
           Row(
             children: [
               const Spacer(),
-              Text(formatTimeAgo(article.publishedAt.toString()??""),style: Theme.of(context)
+              Text(formatTimeAgo(article?.publishedAt.toString()??""),style: Theme.of(context)
                   .textTheme
                   .titleSmall
                   ?.copyWith(color: MyThemeData.greyColor),),
@@ -46,10 +46,18 @@ class NewsItem extends StatelessWidget {
     );
   }
   String formatTimeAgo(String dateString) {
-    // Parse the ISO 8601 date string
-    DateTime dateTime = DateTime.parse(dateString);
+    try {
+      // Check if the dateString is not empty
+      if (dateString.isEmpty) return "Invalid date";
 
-    // Return the formatted time ago string
-    return timeago.format(dateTime);
+      // Parse the ISO 8601 date string
+      DateTime dateTime = DateTime.parse(dateString);
+
+      // Return the formatted time ago string
+      return timeago.format(dateTime);
+    } catch (e) {
+      // Handle the parsing error
+      return "Invalid date";
+    }
   }
 }

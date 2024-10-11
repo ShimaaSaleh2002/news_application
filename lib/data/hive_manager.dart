@@ -1,7 +1,9 @@
 import 'package:hive_flutter/adapters.dart';
+import 'package:injectable/injectable.dart';
 import 'package:news_app/data/models/articles_response.dart';
 import 'package:news_app/data/models/sources_response.dart';
 
+@injectable
 class HiveManager{
 
   static void init()async{
@@ -11,11 +13,12 @@ class HiveManager{
   }
 
 
-  static Future<void> saveSources(String categoryId, SourcesResponse sourcesResponse)async{
+   Future<void> saveSources(String categoryId, SourcesResponse sourcesResponse)async{
     var box = await Hive.openBox("sourcesList");
     box.put(categoryId, sourcesResponse);
   }
-  static Future<SourcesResponse?> getSources(String categoryId)async{
+
+   Future<SourcesResponse?> getSources(String categoryId)async{
     try{
       var box = await Hive.openBox("sourcesList");
       return box.get(categoryId);
@@ -25,11 +28,11 @@ class HiveManager{
     }
   }
 
-  static Future<void> saveArticles(String sourceId, ArticlesResponse articlesResponse)async{
+   Future<void> saveArticles(String sourceId, ArticlesResponse articlesResponse)async{
     var box = await Hive.openBox("articlesList");
     box.put(sourceId, articlesResponse);
   }
-  static Future<ArticlesResponse?> getArticles(String sourceId)async{
+   Future<ArticlesResponse?> getArticles(String sourceId)async{
     try{
       var box = await Hive.openBox("articlesList");
       return box.get(sourceId);

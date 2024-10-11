@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/ui/base/base_api_state.dart';
+import 'package:news_app/ui/di.dart';
 import 'package:news_app/ui/screens/home/tabs/tabs_list_tab/articles_view_model.dart';
 import 'package:news_app/ui/screens/home/tabs/tabs_list_tab/news_item.dart';
 import '../../../../../data/models/article.dart';
@@ -9,7 +10,7 @@ import '../../../../widgets/error_view.dart';
 import '../../../../widgets/loading_view.dart';
 
 class NewsList extends StatefulWidget {
-  final Source source;
+  final Source? source;
 
   const NewsList({super.key, required this.source});
 
@@ -18,13 +19,13 @@ class NewsList extends StatefulWidget {
 }
 
 class _NewsListState extends State<NewsList> {
-  ArticlesViewModel viewModel = ArticlesViewModel();
+  ArticlesViewModel viewModel = getIt();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    viewModel.getArticles(widget.source.id);
+    viewModel.getArticles(widget.source?.id);
   }
 
   @override
@@ -41,7 +42,7 @@ class _NewsListState extends State<NewsList> {
           return ErrorView(
               error: errorState.errorMessage,
               onRetryClick: () {
-                viewModel.getArticles(widget.source.id);
+                viewModel.getArticles(widget.source?.id);
               });
         }else{
           return const LoadingView();
@@ -50,10 +51,10 @@ class _NewsListState extends State<NewsList> {
     );
   }
 
-  Widget buildNewsList(List<Article> list) {
+  Widget buildNewsList(List<Article>? list) {
     return ListView.builder(
-        itemCount: list.length,
-        itemBuilder: (context, index) => NewsItem(article: list[index]));
+        itemCount: list?.length,
+        itemBuilder: (context, index) => NewsItem(article: list?[index]));
   }
 }
 
